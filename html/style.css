@@ -15,7 +15,46 @@
     --gradient-red: #7f001c;
     --gradient-pink: #7f006a;
     --gradient-purple: #24005f;
+
+
+    --radius-small: 0.2;
+    --radius-medium: 0.2;
+    --radius_large: 0.2;
+
+    --space-small:  1rem;
+    --space-medium:  2rem;
+    --space-large:  4rem;
 }
+/* FONTS */
+/* Punch line/caption */
+.poetsen-one-regular {
+  font-family: "Poetsen One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* Quote */
+.knewave-regular {
+  font-family: "Knewave", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* All text */
+.pt-sans-caption-regular {
+  font-family: "PT Sans Caption", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-sans-caption-bold {
+  font-family: "PT Sans Caption", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
 
 html,
 body {
@@ -38,10 +77,35 @@ body {
     background-size: cover;
 }
 
-.hero-image {
+.black-back {
+    width: 700px;
+    margin: 1rem auto;
+    border-radius: 2rem;
+    min-height: 70vh;
+    max-width: 90vw;
+
+background-color: rgb(15 15 15 / 70%);
+}
+
+.tagline{
+    padding-left: 2rem;
+    color: var(--color-white);
+    font-family: "Poetsen One", sans-serif;
+    line-height: 1.6;
+
+}
+
+.hero-logo {
     display: block;
-    width: 100px;
-    max-width: 200px;
+    width: 200px;
     height: auto;
-    margin: 0 auto;
+    padding-top: 4rem;
+    padding-left: 2rem;
+}
+
+.two-buttons {
+    display: flex;
+    flex-direction: column;
+    gap 2rem;
+    margin: 4rem;
 }
