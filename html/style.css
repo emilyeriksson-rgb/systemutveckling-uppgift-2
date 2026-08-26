@@ -1,0 +1,47 @@
+:root {
+    --color-blue-dark: #002882;
+    --color-blue-light: #5D87E8;
+
+    --color-white: #FFFFFF;
+    --color-gray-light: #EBEBEB;
+    --color-gray: #DEDEDE;
+
+    --color-black: #0F0F0F;
+    --color-black-soft: #101010;
+    --color-dark: #1A1A1A;
+    --color-dark-gray: #232323;
+    --color-gray-dark: #333333;
+
+    --gradient-red: #7f001c;
+    --gradient-pink: #7f006a;
+    --gradient-purple: #24005f;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+
+    background: linear-gradient(
+        110deg,
+        var(--gradient-red) 0%,
+        var(--gradient-pink) 50%,
+        var(--gradient-purple) 100%
+    );
+
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.hero-image {
+    display: block;
+    width: 100px;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto;
+}
