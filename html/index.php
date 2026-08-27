@@ -29,6 +29,9 @@ $page_name = 'Face IT';
                 <button type="button" class="secondary-btn">Create a new user</button>    
             </section>
         </section>
+        <footer>
+            <p>Contact</p><!-- <P>log out</p> -->
+</footer>
     </main>
     
 </body>
