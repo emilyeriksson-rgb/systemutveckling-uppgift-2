@@ -5,9 +5,10 @@
                     <a href="/">Home</a>
                     <a href="/groups/">My groups</a>
                     <a href="/profile/">Profile</a>
+                    <a href="#">Reset password </a>
 
                     <form action="/logout/" method="post">
-                        <button type="submit">Log out</button>
+                        <button class="secondary-btn" type="submit">Log out</button>
                     </form>
                 </nav>
             <?php endif; ?>
