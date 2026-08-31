@@ -2,7 +2,21 @@
 session_start();
 
 $page_name = 'Face IT';
-$isLoggedIn = isset($_SESSION['user_id']); ?>
+$isLoggedIn = isset($_SESSION['user_id']);
+
+$loginError = $_SESSION['login_error'] ?? '';
+$loginEmail = $_SESSION['login_email'] ?? '';
+
+
+unset(
+    $_SESSION['login_error'],
+    $_SESSION['login_email']
+);
+
+if (!$isLoggedIn && empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
