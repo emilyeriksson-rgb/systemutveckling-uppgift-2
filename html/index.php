@@ -14,7 +14,7 @@ $isLoggedIn = isset($_SESSION['user_id']); ?>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Knewave&family=PT+Sans+Caption:wght@400;700&family=Poetsen+One&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/style.css?v=3">
+<link rel="stylesheet" href="/style.css?v=4">
     <title>
         <?= htmlspecialchars($page_name, ENT_QUOTES, 'UTF-8') ?>
     </title>
