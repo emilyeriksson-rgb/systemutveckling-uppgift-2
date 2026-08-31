@@ -17,9 +17,9 @@
     --gradient-purple: #24005f;
 
 
-    --radius-small: 0.2;
-    --radius-medium: 0.2;
-    --radius_large: 0.2;
+    --radius-small: 0.2rem;
+    --radius-medium: 0.5rem;
+    --radius_large: 1rem;
 
     --space-small:  1rem;
     --space-medium:  2rem;
@@ -95,6 +95,7 @@ background-color: rgb(15 15 15 / 70%);
     padding-left: 2rem;
     color: var(--color-white);
     font-family: "Poetsen One", sans-serif;
+    font-size: 1.2rem;
     line-height: 1.6;
     margin:0 var(--space-small);
     max-width: 500px;
@@ -121,20 +122,21 @@ background-color: rgb(15 15 15 / 70%);
 
 .primary-btn {
   font-family: "PT Sans Caption", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
+  font-size: 1.2rem;
   text-decoration: none;
+  border: none;
+  appearance: none;
+  cursor: pointer;
   
     background-color: var(--color-blue-dark);
     color: var(--color-white);
     padding: var(--space-small) var(--space-medium);
+
     border-radius: 40px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
-/* 
-.primary-btn:hover {
-}
- */
 
 .secondary-btn {
     font-family: "PT Sans Caption", sans-serif;
@@ -154,4 +156,89 @@ footer {
     text-align: center;
     color: var(--color-white);
     padding: var(--space-small);
+}
+
+
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+.register-page {
+    color: var(--color-white);
+    padding: var(--space-medium);
+}
+
+.register-page > h1,
+.register-page > form,
+.register-page > .backLink,
+.register-page > .form-errors {
+    width: 100%;
+    max-width: 31rem;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+.register-page > h1 {
+    margin-top: var(--space-medium);
+    margin-bottom: var(--space-medium);
+
+    font-family: "Poetsen One", sans-serif;
+    font-size: 2.5rem;
+    font-weight: 100;
+}
+
+.register-page > form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-small);
+}
+
+.register-page input {
+    width: 100%;
+    min-height: 2.5rem;
+    box-sizing: border-box;
+
+    padding: 0.5rem 0.75rem;
+    margin-bottom: var(--space-small);
+
+    font: inherit;
+
+    border: 1px solid var(--color-blue-light);
+    border-radius: 0.5rem;
+}
+
+.register-page button {
+    margin-top: var(--space-large);
+}
+
+.register-page input::placeholder {
+    color: var(--color-gray-dark);
+    opacity: 0.7;
+}
+
+.backLink {
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.small-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+
+}
+
+.small-logo {
+    grid-column: 2;
+    display: block;
+    width: 100%;
+    max-width: 10rem;
+    height: auto;
 }

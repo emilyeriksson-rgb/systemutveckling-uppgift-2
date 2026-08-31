@@ -137,6 +137,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Knewave&family=PT+Sans+Caption:wght@400;700&family=Poetsen+One&display=swap" rel="stylesheet">
+
 
     <link rel="stylesheet" href="/style.css?v=3">
 
@@ -146,8 +150,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <main class="register-page">
-        <a href="/">Back to home</a>
+    <main class="register-page black-back">
+        <div class="small-header">
+        <a class="backLink" href="/">Back</a>
+            <img src="../face_it.webp" class="small-logo" alt="Face IT">
+        </div>  
 
         <h1>Create an account</h1>
 
@@ -179,6 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="first-name"
                 name="first_name"
                 type="text"
+                placeholder="Enter your first name"
                 maxlength="100"
                 autocomplete="given-name"
                 value="<?= htmlspecialchars(
@@ -194,6 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="last-name"
                 name="last_name"
                 type="text"
+                placeholder="Enter your last name"
                 maxlength="100"
                 autocomplete="family-name"
                 value="<?= htmlspecialchars(
@@ -209,6 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             id="user-name"
             name="user_name"
             type="text"
+            placeholder="Choose a display name"
             minlength="2"
             maxlength="50"
             autocomplete="nickname"
@@ -225,8 +235,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="email"
                 name="email"
                 type="email"
+                placeholder="name@example.com"
                 maxlength="255"
                 autocomplete="email"
+                
                 value="<?= htmlspecialchars(
                     $email,
                     ENT_QUOTES,
@@ -240,6 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="password"
                 name="password"
                 type="password"
+                placeholder="At least 8 characters"
                 minlength="8"
                 autocomplete="new-password"
                 required
@@ -252,12 +265,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="password-confirmation"
                 name="password_confirmation"
                 type="password"
+                placeholder="Repeat your password"
                 minlength="8"
                 autocomplete="new-password"
                 required
             >
 
-            <button type="submit">Create account</button>
+            <button class="primary-btn" type="submit">Create account</button>
         </form>
     </main>
 
