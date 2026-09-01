@@ -19,6 +19,9 @@ if (isset($_SESSION['user_id'])) {
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Knewave&family=PT+Sans+Caption:wght@400;700&family=Poetsen+One&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/style.css?v=4">
 
@@ -71,7 +74,7 @@ if (isset($_SESSION['user_id'])) {
 
         <p>
             Don’t have an account?
-            <a href="/register/">Create one</a>
+            <a class="secondary-btn" href="/register/">Create one</a>
         </p>
     </main>
 
