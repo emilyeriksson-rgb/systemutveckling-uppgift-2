@@ -256,3 +256,22 @@ footer {
     padding: var(--space-medium);
     gap: var(--space-small);
 }
+
+.form-errors {
+    width: 100%;
+    max-width: 31rem;
+    box-sizing: border-box;
+
+    margin: 0 auto var(--space-small);
+
+    color: var(--color-white);
+    background-color: rgb(127 0 28 / 45%);
+
+    border: 0.2rem solid var(--gradient-red);
+    border-radius: var(--radius_large);
+}
+
+.form-errors p {
+    line-height: 1.5;
+    font-weight: 500;
+}

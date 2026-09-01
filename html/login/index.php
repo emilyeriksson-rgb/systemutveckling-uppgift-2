@@ -2,11 +2,60 @@
 
 session_start();
 
+require_once dirname(__DIR__) . '/includes/functions.php';
+
 $page_name = 'Log in | Face IT';
+
+$error = '';
+$email = '';
 
 if (isset($_SESSION['user_id'])) {
     header('Location: /');
     exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = strtolower(trim($_POST['email'] ?? ''));
+    $password = $_POST['password'] ?? '';
+
+    if (
+        !filter_var($email, FILTER_VALIDATE_EMAIL)
+        || $password === ''
+    ) {
+        $error = 'Invalid email address or password.';
+    } else {
+        $pdo = connectDatabase();
+
+        $statement = $pdo->prepare(
+            'SELECT user_id, password_hash
+             FROM users
+             WHERE email = :email
+             LIMIT 1'
+        );
+
+        $statement->execute([
+            'email' => $email
+        ]);
+
+        $user = $statement->fetch();
+
+        if (
+            $user
+            && password_verify(
+                $password,
+                $user['password_hash']
+            )
+        ) {
+            session_regenerate_id(true);
+
+            $_SESSION['user_id'] = (int) $user['user_id'];
+
+            header('Location: /');
+            exit;
+        }
+
+        $error = 'Invalid email address or password.';
+    }
 }
 ?>
 
@@ -53,6 +102,7 @@ if (isset($_SESSION['user_id'])) {
                 type="email"
                 placeholder="name@example.com"
                 autocomplete="email"
+                value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>"
                 required
             >
 
@@ -66,6 +116,14 @@ if (isset($_SESSION['user_id'])) {
                 autocomplete="current-password"
                 required
             >
+
+            <?php if ($error !== ''): ?>
+                <div class="form-errors" role="alert">
+                    <p>
+                        <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
             <button type="submit" class="primary-btn">
                 Log in
