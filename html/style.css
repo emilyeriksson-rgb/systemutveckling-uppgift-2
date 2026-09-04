@@ -71,7 +71,7 @@ body {
         var(--gradient-pink) 50%,
         var(--gradient-purple) 100%
     );
-
+    
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
@@ -79,13 +79,25 @@ body {
 
 main {
     flex: 1;
+    width: 90%;
+    max-width: 43.75rem;
+    min-height: 70vh;
+    margin: var(--space-small) auto;
+    color: var(--color-white);
+}
+
+h1 {
+    margin-top: var(--space-medium);
+    margin-bottom: var(--space-medium);
+
+    font-family: "Poetsen One", sans-serif;
+    font-size: 2.5rem;
+    font-weight: 100;
+    color: var(--color-white);
 }
 
 .black-back {
     position: static;
-    width: 90%;
-    max-width: 43.75rem;
-    min-height: 70vh;
     box-sizing: border-box;
     margin: var(--space-small) auto;
     background-color: rgb(15 15 15 / 70%);
@@ -94,8 +106,8 @@ main {
 
 .tagline{
     padding-left: 2rem;
-    color: var(--color-white);
-    font-family: "Poetsen One", sans-serif;
+/*     color: var(--color-white);
+ */    font-family: "Poetsen One", sans-serif;
     font-size: 1.2rem;
     line-height: 1.6;
     margin:0 var(--space-small);
@@ -182,16 +194,6 @@ footer {
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
-}
-
-.login-page > h1,
-.register-page > h1 {
-    margin-top: var(--space-medium);
-    margin-bottom: var(--space-medium);
-
-    font-family: "Poetsen One", sans-serif;
-    font-size: 2.5rem;
-    font-weight: 100;
 }
 
 .login-page > form,
@@ -391,4 +393,42 @@ box-shadow:
 
     z-index: 2;
     transition: opacity 150ms ease;
+}
+
+/*  */
+/*  */
+/*  */
+
+.create-discussion-form {
+    display: grid;
+    grid-template-areas: 
+        "subject group"
+        "content content"
+        "submit submit";
+
+   grid-template-columns: 1fr auto;
+    gap: var(--space-small);
+}
+
+.subject-field {
+    grid-area: subject;
+}
+
+.group-field {
+    grid-area: group;
+}
+
+.content-field {
+    grid-area: content;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.create-discussion-form > button {
+    grid-area: submit;
+    justify-self: center;
 }

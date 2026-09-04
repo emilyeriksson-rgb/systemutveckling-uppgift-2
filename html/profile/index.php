@@ -34,10 +34,9 @@ if (!$isLoggedIn) {
         <h1>My profile</h1>
 
         <section>
-            <h2>Personal information</h2>
+          <h2>This is your profile, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?>!</h2>
 
-            <p>Name will appear here.</p>
-            <p>Email address will appear here.</p>
+            <p>
         </section>
 
         <section>
