@@ -60,10 +60,9 @@ if (!$isLoggedIn) {
 
         <section>
             <h2>Settings</h2>
-
-            <form action="/logout/" method="post">
-                <button type="submit">Log out</button>
-            </form>
+                    <form action="/logout/" method="post">
+                        <button type="submit" class="secondary-btn">Log out</button>
+                    </form>
         </section>
     </main>
 
