@@ -1,36 +1,43 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/includes/functions.php';
+
+
 $page_name = 'Face IT';
 $isLoggedIn = isset($_SESSION['user_id']);
 
 $loginError = $_SESSION['login_error'] ?? '';
 $loginEmail = $_SESSION['login_email'] ?? '';
-
+$discussionError = $_SESSION['discussion_error'] ?? '';
+$discussionSuccess = $_SESSION['discussion_success'] ?? '';
 
 unset(
     $_SESSION['login_error'],
-    $_SESSION['login_email']
+    $_SESSION['login_email'],
+    $_SESSION['discussion_error'],
+    $_SESSION['discussion_success']
 );
 
-if (!$isLoggedIn && empty($_SESSION['csrf_token'])) {
+if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-require_once __DIR__ . '/includes/functions.php';
-
 $myGroups = [];
+$latestDiscussions = [];
 
 if ($isLoggedIn) {
     $pdo = connectDatabase();
 
     $statement = $pdo->prepare(
-        'SELECT groups.group_id, groups.group_name
-         FROM groups
-         INNER JOIN group_members
+        'SELECT
+            groups.group_id,
+            groups.group_name
+        FROM groups
+        INNER JOIN group_members
             ON group_members.group_id = groups.group_id
-         WHERE group_members.user_id = :user_id
-         ORDER BY groups.group_name'
+        WHERE group_members.user_id = :user_id
+        ORDER BY groups.group_name'
     );
 
     $statement->execute([
@@ -38,6 +45,42 @@ if ($isLoggedIn) {
     ]);
 
     $myGroups = $statement->fetchAll();
+
+    $statement = $pdo->prepare(
+        'SELECT
+            discussions.discussion_id,
+            discussions.title,
+            discussions.created_at,
+            groups.group_id,
+            groups.group_name,
+            users.user_id,
+            users.user_name,
+            posts.content
+        FROM discussions
+        INNER JOIN groups
+            ON groups.group_id = discussions.group_id
+        INNER JOIN group_members
+            ON group_members.group_id = discussions.group_id
+            AND group_members.user_id = :user_id
+        INNER JOIN users
+            ON users.user_id = discussions.created_by
+        INNER JOIN posts
+            ON posts.post_id = (
+                SELECT MIN(first_post.post_id)
+                FROM posts AS first_post
+                WHERE first_post.discussion_id =
+                    discussions.discussion_id
+            )
+        ORDER BY discussions.created_at DESC
+        LIMIT 10'
+    );
+
+    $statement->execute([
+        'user_id' => $_SESSION['user_id']
+    ]);
+
+    $latestDiscussions = $statement->fetchAll();
+
 }
 ?>
 
@@ -146,12 +189,81 @@ if ($isLoggedIn) {
             Create discussion
         </button>
     </form>
-    <!-- Här kommer de senaste kommentarerna/diskussionerna användaren deltagit i att listas -->
-
-    <!-- Här kommer andra diskusioner att visas. (visa grupp, titel, datum, antal kommentarer)
-    Klickar man på en diskussion visas alla kommentarer i den diskussionen. --> 
-    
+    <?php if ($discussionError !== ''): ?>
+    <div class="form-errors" role="alert">
+        <p>
+            <?= htmlspecialchars(
+                $discussionError,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+        </p>
+    </div>
 <?php endif; ?>
+
+<?php if ($discussionSuccess !== ''): ?>
+    <div class="success-message" role="status">
+        <p>
+            <?= htmlspecialchars(
+                $discussionSuccess,
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>
+        </p>
+    </div>
+<?php endif; ?>
+
+<section class="latest-discussions">
+    <h2>Latest discussions</h2>
+
+    <?php if (empty($latestDiscussions)): ?>
+        <p>You don’t have any discussions yet.</p>
+    <?php else: ?>
+        <?php foreach ($latestDiscussions as $discussion): ?>
+            <article class="discussion-card">
+                <p class="author">
+                    <span title="User ID: <?= (int) $discussion['user_id'] ?>">
+                        <?= htmlspecialchars(
+                            $discussion['user_name'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </span>
+                </p>
+                <p class="group">
+                    <a href="/groups/view/?id=<?= (int) $discussion['group_id'] ?>">
+                        <?= htmlspecialchars(
+                            $discussion['group_name'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </a>
+                </p>
+                <h3 class="subject">
+                    <a href="/discussions/view/?id=<?= (int) $discussion['discussion_id'] ?>">
+                        <?= htmlspecialchars(
+                            $discussion['title'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </a>
+                </h3>
+
+
+                <p class="content">
+                    <?= nl2br(htmlspecialchars(
+                        $discussion['content'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    )) ?>
+                </p>
+
+            </article>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</section>
+<?php endif; ?>
+
     <?php endif; ?>
 
     </main>

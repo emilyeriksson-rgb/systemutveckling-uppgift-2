@@ -128,6 +128,7 @@ try {
 
     header('Location: /');
     exit;
+    
 } catch (Throwable $exception) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
