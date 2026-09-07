@@ -524,6 +524,24 @@ border-radius: 0.5rem;
     opacity: 1;
 }
 
+.success-message {
+    margin: var(--space-small) auto;
+    text-align: center;
+
+    animation: message-slide-in 500ms ease-out both;
+}
+
+@keyframes message-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* Discussions */
 .discussion-card {
@@ -666,13 +684,110 @@ border-radius: 0.5rem;
       text-decoration: none;
 
       box-shadow: 0 0.25rem 0.75rem rgb(15 15 15 / 30%);
+
 }
-.message p, h3{
-    
+
+@keyframes author-reveal {
+    from {
+        opacity: 0;
+        transform: translateX(-3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes group-reveal {
+    from {
+        opacity: 0;
+        transform: translate(-3rem, 0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0, 0.75rem);
+    }
+}
+
+@keyframes discussion-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(2rem) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@supports (animation-timeline: view()) {
+    .author {
+        animation-name: author-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+    }
+
+    .group {
+        animation-name: group-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 10% entry 55%;
+    }
+
+    .message {
+        transform-origin: top left;
+
+        animation-name: discussion-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 20% entry 80%;
+    }
+}
+
+.message p,
+.message h3 {
     margin: 0;
-    
 }
 
 .discussion-card > a:hover {
     border-color: var(--color-blue-light);
+}
+
+.opacity-line {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.discussion-header > h1 {
+    margin-bottom: var(--space-small);
+}
+
+
+
+
+
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+    .success-message,
+    .author,
+    .group,
+    .message {
+        animation: none;
+    }
 }
