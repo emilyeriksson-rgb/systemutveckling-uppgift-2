@@ -11,6 +11,18 @@ if (!$isLoggedIn) {
     exit;
 }
 
+$replyError = $_SESSION['reply_error'] ?? '';
+$replySuccess = $_SESSION['reply_success'] ?? '';
+
+unset(
+    $_SESSION['reply_error'],
+    $_SESSION['reply_success']
+);
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $userId = (int) $_SESSION['user_id'];
 
 $discussionId = filter_input(
@@ -26,12 +38,6 @@ if (!$discussionId) {
 
 $pdo = connectDatabase();
 
-/*
- * Hämta diskussionen.
- *
- * INNER JOIN med group_members gör att diskussionen bara hittas
- * om den inloggade användaren är medlem i gruppen.
- */
 $statement = $pdo->prepare(
     'SELECT
         discussions.discussion_id,
@@ -130,17 +136,8 @@ $page_name = $discussion['title'] . ' | Face IT';
         </a>
 
         <header class="discussion-header">
-            <a
-                class="group"
-                href="/groups/view/?id=<?= (int) $discussion['group_id'] ?>"
-            >
-                <?= htmlspecialchars(
-                    $discussion['group_name'],
-                    ENT_QUOTES,
-                    'UTF-8'
-                ) ?>
-            </a>
-
+      
+<div>
             <h1>
                 <?= htmlspecialchars(
                     $discussion['title'],
@@ -164,6 +161,17 @@ $page_name = $discussion['title'] . ' | Face IT';
                     ) ?>
                 </span>
             </p>
+            </div>
+                  <a
+                class="group"
+                href="/groups/view/?id=<?= (int) $discussion['group_id'] ?>"
+            >
+                <?= htmlspecialchars(
+                    $discussion['group_name'],
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </a>
         </header>
 
         <section class="discussion-posts">
@@ -209,6 +217,62 @@ $page_name = $discussion['title'] . ' | Face IT';
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
+
+        <section class="reply-section">
+    <?php if ($replyError !== ''): ?>
+        <div class="form-errors" role="alert">
+            <p>
+                <?= htmlspecialchars(
+                    $replyError,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </p>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($replySuccess !== ''): ?>
+        <div class="success-message" role="status">
+            <p>
+                <?= htmlspecialchars(
+                    $replySuccess,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </p>
+        </div>
+    <?php endif; ?>
+
+    <form class="form-field" action="/discussions/reply/" method="post">
+        <input type="hidden" name="csrf_token"
+            value="<?= htmlspecialchars(
+                $_SESSION['csrf_token'],
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?>"
+        >
+
+        <input type="hidden" name="discussion_id" value="<?= (int) $discussion['discussion_id'] ?>"
+        >
+
+        <label for="reply-content">
+            Reply
+        </label>
+
+        <textarea
+            id="reply-content"
+            name="content"
+            rows="5"
+            maxlength="5000"
+            placeholder="Write your reply..."
+            required
+        ></textarea>
+
+        <button class="primary-btn" type="submit">
+            Post
+        </button>
+    </form>
+</section>
     </main>
 
     <footer>

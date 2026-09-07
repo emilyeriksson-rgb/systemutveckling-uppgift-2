@@ -287,13 +287,15 @@ footer {
 
 /* Inlogad */
 
-.logged-in-header{
+.logged-in-header {
     display: flex;
-    flex-direction: column;
-    width: 700px;
-    max-width: 90vw;
-    margin:var(--space-small) auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
+    width: 90%;
+    max-width: 43.75rem;
+    margin: var(--space-small) auto;
 }
 
 .main-navigation {
@@ -434,16 +436,19 @@ box-shadow:
     padding-bottom: var(--space-small);
 }
 
-.create-discussion-form > button {
+.create-discussion-form > button,
+.form-field > button {
     grid-area: submit;
     justify-self: center;
-    margin: var(--space-medium);
+    margin: var(--space-medium) auto;
 }
 
 .form-field label {
     font-weight: 700;
     font-size: 1.1rem;
+    margin-top: var(--space-medium);
 }
+
 
 .form-field input,
 .form-field select,
@@ -544,10 +549,14 @@ border-radius: 0.5rem;
 }
 
 /* Discussions */
+.post-card,
+.discussion-card {
+       width: 100%;
+    max-width: 30rem;
+}
+
 .discussion-card {
     display: grid;
-    width: 100%;
-    max-width: 30rem;
     grid-template-areas:
     "author group"
     "message message"; 
@@ -771,8 +780,17 @@ border-radius: 0.5rem;
     font-size: 0.9rem;
 }
 
-.discussion-header > h1 {
-    margin-bottom: var(--space-small);
+.discussion-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.discussion-header > div > h1 {
+    margin-bottom: 0;
+}
+.group:hover {
+    border-color: var(--color-blue-light);
 }
 
 

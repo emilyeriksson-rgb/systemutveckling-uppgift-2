@@ -67,8 +67,7 @@ $currentPath = parse_url(
                 >
                 <span class="nav-label">Profile</span>
             </a>
-
-     
         </nav>
+        
     </header>
 <?php endif; ?>
