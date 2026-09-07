@@ -222,7 +222,11 @@ if ($isLoggedIn) {
         <?php foreach ($latestDiscussions as $discussion): ?>
             <article class="discussion-card">
                 <p class="author">
-                    <span title="User ID: <?= (int) $discussion['user_id'] ?>">
+                    <span
+                        class="user-name"
+                        data-user-id="<?= (int) $discussion['user_id'] ?>"
+                        tabindex="0"
+                    >
                         <?= htmlspecialchars(
                             $discussion['user_name'],
                             ENT_QUOTES,
@@ -230,33 +234,29 @@ if ($isLoggedIn) {
                         ) ?>
                     </span>
                 </p>
-                <p class="group">
-                    <a href="/groups/view/?id=<?= (int) $discussion['group_id'] ?>">
+                    <a class="group" href="/groups/view/?id=<?= (int) $discussion['group_id'] ?>">
                         <?= htmlspecialchars(
                             $discussion['group_name'],
                             ENT_QUOTES,
                             'UTF-8'
                         ) ?>
                     </a>
-                </p>
+                    <a class="message" href="/discussions/view/?id=<?= (int) $discussion['discussion_id'] ?>">
                 <h3 class="subject">
-                    <a href="/discussions/view/?id=<?= (int) $discussion['discussion_id'] ?>">
                         <?= htmlspecialchars(
                             $discussion['title'],
                             ENT_QUOTES,
                             'UTF-8'
                         ) ?>
-                    </a>
                 </h3>
-
-
                 <p class="content">
                     <?= nl2br(htmlspecialchars(
                         $discussion['content'],
                         ENT_QUOTES,
                         'UTF-8'
-                    )) ?>
+                        )) ?>
                 </p>
+            </a>
 
             </article>
         <?php endforeach; ?>
