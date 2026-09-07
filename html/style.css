@@ -96,6 +96,11 @@ h1 {
     color: var(--color-white);
 }
 
+h2, h3, h4, h5, h6 {
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 100;
+}
+
 .black-back {
     position: static;
     box-sizing: border-box;
@@ -426,9 +431,363 @@ box-shadow:
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    padding-bottom: var(--space-small);
 }
 
 .create-discussion-form > button {
     grid-area: submit;
     justify-self: center;
+    margin: var(--space-medium);
+}
+
+.form-field label {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    min-height: 2.5rem;
+    box-sizing: border-box;
+
+    padding: 0.5rem 0.75rem;
+
+    font: inherit;
+}
+
+.form-field select {
+    background: radial-gradient(
+        circle at 30% 25%,
+        rgb(255 255 255 / 20%),
+        rgb(127 0 106 / 25%) 40%,
+        rgb(36 0 95 / 28%) 100%
+    );
+    border-color: rgb(255 255 255 / 20%);
+
+    box-shadow:
+    inset 0.1rem 0.1rem 0.3rem rgb(255 255 255 / 18%),
+    0 0.25rem 0.7rem rgb(15 15 15 / 20%);
+
+    color: var(--color-white);
+    border-radius: 0.5rem;
+}
+.form-field select option {
+    background-color: var(--gradient-pink);
+    color: var(--color-white);
+}
+
+.form-field input,
+.form-field textarea {
+     background: radial-gradient(
+    circle at 30% 25%,
+    rgb(255 255 255 / 60%),
+    rgb(127 0 106 / 25%) 80%,
+    rgb(36 0 95 / 28%) 100%
+);
+border-color: rgb(255 255 255 / 20%);
+border-radius: 0.5rem;
+
+    transition:
+      background 200ms ease,
+        color 200ms ease,
+        border-color 200ms ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field input:not(:placeholder-shown),
+.form-field textarea:not(:placeholder-shown) {
+    background: radial-gradient(
+        circle at 30% 25%,
+         rgba(228, 177, 208, 0.829),
+    rgb(177, 112, 166) 80%,
+    rgb(138, 88, 153) 100%
+    );
+
+    color: var(--color-dark-gray);
+    border-color: var(--color-blue-light);
+    outline: none;
+
+    font-family: "PT Sans Caption", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: var(--color-gray-dark);
+    font-family: "PT Sans Caption", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    opacity: 1;
+}
+
+.success-message {
+    margin: var(--space-small) auto;
+    text-align: center;
+
+    animation: message-slide-in 500ms ease-out both;
+}
+
+@keyframes message-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Discussions */
+.discussion-card {
+    display: grid;
+    width: 100%;
+    max-width: 30rem;
+    grid-template-areas:
+    "author group"
+    "message message"; 
+}
+
+.author {
+    grid-area: author;
+    justify-self: start;
+    width: fit-content;
+    font-family:"Poetsen One", sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.05rem;
+    box-shadow: 0 0.25rem 0.75rem rgb(15 15 15 / 30%);
+    
+     background: radial-gradient(
+    circle at 30% 25%,
+        rgb(94, 0, 66) 10%,
+    rgb(127 0 106 / 25%) 80%,
+    rgb(36 0 95 / 28%) 100%
+);
+
+    border: 1px solid rgb(255 255 255 / 20%);
+    border-radius: 2rem;
+
+    padding: 0.75rem;
+}
+
+.user-name {
+    position: relative;
+    display: inline-block;
+
+    color: var(--color-white);
+    cursor: help;
+}
+
+.user-name::after {
+    content: "User ID: " attr(data-user-id);
+
+    position: absolute;
+    z-index: 5;
+
+    left: 50%;
+    bottom: calc(100% + 0.5rem);
+    transform: translate(-50%, 0.25rem);
+
+    width: max-content;
+    padding: 0.4rem 0.7rem;
+
+    color: var(--color-white);
+    background-color: rgba(40, 2, 41, 0.9);
+
+    border: 1px solid rgb(255 255 255 / 25%);
+    border-radius: 0.5rem;
+
+    font-family: "PT Sans Caption", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 150ms ease,
+        transform 150ms ease;
+}
+
+.user-name:hover::after,
+.user-name:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.group {
+    grid-area: group;
+    justify-self: end;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+    width: fit-content;
+    padding: 0.75rem;
+
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.05rem;
+    line-height: 1;
+
+    color: var(--color-white);
+    text-decoration: none;
+
+    background: radial-gradient(
+    circle at 50% 20%,
+        rgb(94, 0, 66) 10%,
+    rgb(127 0 106) 80%
+);
+
+    border-radius: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0);
+
+
+    position: relative;
+    z-index: 2;
+
+    transform: translateY(0.75rem);
+}
+
+.message {
+     grid-area: message;
+     margin-bottom: var(--space-medium);
+     margin-left: var(--space-small);
+      position: relative;
+    z-index: 1;
+
+ background: radial-gradient(
+    circle at 30% 25%,
+      rgb(94, 0, 66) 20%,
+    rgb(127 0 106 / 25%) 100%,
+    rgb(36 0 95 / 28%) 30%);
+
+    border: 1px solid rgb(255 255 255 / 20%);
+    border-radius: 0.5rem 4rem 4rem 2rem;
+
+    padding: 0.75rem;
+    text-decoration: none;
+
+    font-family: "PT Sans Caption", sans-serif;
+    font-style: normal;
+    
+      letter-spacing: 0.05rem;
+      color: var(--color-white);
+      text-decoration: none;
+
+      box-shadow: 0 0.25rem 0.75rem rgb(15 15 15 / 30%);
+
+}
+
+@keyframes author-reveal {
+    from {
+        opacity: 0;
+        transform: translateX(-3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes group-reveal {
+    from {
+        opacity: 0;
+        transform: translate(-3rem, 0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0, 0.75rem);
+    }
+}
+
+@keyframes discussion-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(2rem) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@supports (animation-timeline: view()) {
+    .author {
+        animation-name: author-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+    }
+
+    .group {
+        animation-name: group-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 10% entry 55%;
+    }
+
+    .message {
+        transform-origin: top left;
+
+        animation-name: discussion-reveal;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+
+        animation-timeline: view();
+        animation-range: entry 20% entry 80%;
+    }
+}
+
+.message p,
+.message h3 {
+    margin: 0;
+}
+
+.discussion-card > a:hover {
+    border-color: var(--color-blue-light);
+}
+
+.opacity-line {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.discussion-header > h1 {
+    margin-bottom: var(--space-small);
+}
+
+
+
+
+
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+    .success-message,
+    .author,
+    .group,
+    .message {
+        animation: none;
+    }
 }
