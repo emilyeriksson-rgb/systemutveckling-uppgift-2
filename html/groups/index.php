@@ -114,25 +114,43 @@ $availableGroups = $statement->fetchAll();
         <div class="left-column">
             <section class="my-groups">
                 <h1>My groups</h1>
-                 <?php if (empty($myGroups)): ?>
-                        <p>You are not a member of any groups yet.</p>
-                    <?php else: ?>
-                        <div class="groups-list">
-                            <?php foreach ($myGroups as $group): ?>
-                                <a class="group-list-item <?= $group['member_role'] === 'admin' ? ' admin-group' : '' ?>" href="/groups/view/?id=<?= (int) $group['group_id'] ?>">
-                                    <span>
-                                        <?= htmlspecialchars( $group['group_name'], ENT_QUOTES, 'UTF-8' ) ?>
-                                    </span>
-                                    <?php if ($group['member_role'] === 'admin'): ?>
-                                       <img class="admin-icon" src="/assets/icons/admin-icon.svg" alt="Admin" title="You are an admin of this group">
-                                    <?php endif; ?>
-                                </a>
+                <?php if (empty($myGroups)): ?>
+                    <p>You are not a member of any groups yet.</p>
+                <?php else: ?>
+                    <div class="groups-list">
+                        <?php foreach ($myGroups as $group): ?>
+                            <div class="group-list-item<?= $group['member_role'] === 'admin' ? ' admin-group' : '' ?>">
 
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
+                                    <a class="group-link" href="/groups/view/?id=<?= (int) $group['group_id'] ?>">
+                                        <span><?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?></span>
+                                    </a>
 
-              </section>
+                                        <?php if ($group['member_role'] === 'admin'): ?>
+                                            <img class="admin-icon" src="/assets/icons/admin-icon.svg" alt="Administrator" title="You are an administrator for this group">
+                                        <?php endif; ?>
+                                        
+                                        <?php if ($group['member_role'] === 'member'): ?>
+                                            <form action="/groups/leave/" method="post">
+                                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
+                                                
+                                                <button class="group-button" type="submit" aria-label="Leave <?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?>" title="Leave group"><img src="/assets/icons/remove.svg" alt="Leave group"></button>
+                                            </form>
+                                            <?php endif; ?>
+
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                    <form class="create-group-form form-field" action="/groups/create/" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+
+                        <label for="group-name">Create a new group</label>
+                        <input id="group-name" name="group_name" type="text" maxlength="150" placeholder="Enter a group name" required>
+
+                        <button class="secondary-btn" type="submit">Create</button>
+                    </form>
+            </section>
 
             <section class="pending-groups">
                 <h2>Waiting for approval</h2>
@@ -140,19 +158,18 @@ $availableGroups = $statement->fetchAll();
                         <p>See a group you’d like to join? Hit the + and it’ll appear here while a group admin reviews your request.</p>
                     <?php else: ?>
                         <div class="groups-list">
-                            <?php foreach ($pendingGroups as $group): ?>
+                           <?php foreach ($pendingGroups as $group): ?>
                                 <div class="group-list-item">
-                                    <span>
-                                        <?= htmlspecialchars(
-                                            $group['group_name'],
-                                            ENT_QUOTES,
-                                            'UTF-8'
-                                        ) ?>
-                                    </span>
 
-                                    <span class="pending-label">
-                                        Pending
-                                    </span>
+                                    <span><?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?></span>
+
+                                    <form action="/groups/applications/cancel/" method="post">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">   
+                                        <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
+
+                                        <button class="group-button" type="submit" aria-label="Cancel application to <?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?>" title="Cancel application"><img src="/assets/icons/undo.svg" alt="Cancel application"></button>
+                                    </form>
+
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -171,16 +188,14 @@ $availableGroups = $statement->fetchAll();
                             <div class="group-list-item">
                                 <span> <?= htmlspecialchars( $group['group_name'], ENT_QUOTES, 'UTF-8' ) ?>
                                 </span>
-                                  <form action="/groups/apply/" method="post">
+                                <form action="/groups/apply/" method="post">
                                     <input type="hidden" name="csrf_token"value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
 
                                     <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
 
-                                    <button class="apply-button" type="submit" aria-label="Apply to join <?= htmlspecialchars($group['group_name'],ENT_QUOTES, 'UTF-8') ?>">
-                                        +
-                                    </button>
-      </form>
-            </div>
+                                    <button class="apply-button" type="submit" aria-label="Apply to join <?= htmlspecialchars($group['group_name'],ENT_QUOTES, 'UTF-8') ?>"><img src="/assets/icons/add.svg" alt="Apply to join group"></button>
+                                </form>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
