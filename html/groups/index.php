@@ -15,6 +15,14 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+$groupError = $_SESSION['group_error'] ?? '';
+$groupSuccess = $_SESSION['group_success'] ?? '';
+
+unset(
+    $_SESSION['group_error'],
+    $_SESSION['group_success']
+);
+
 $myGroups = [];
 $pendingGroups = [];
 $availableGroups = [];
@@ -110,7 +118,20 @@ $availableGroups = $statement->fetchAll();
 <body>
 <?php require dirname(__DIR__) . '/includes/navigation.php'; ?>
 
-    <main class="groups-columns">
+
+<main class="groups-page">
+    <?php if ($groupError !== ''): ?>
+    <div class="form-errors" role="alert">
+        <p><?= htmlspecialchars($groupError, ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+<?php endif; ?>
+
+<?php if ($groupSuccess !== ''): ?>
+    <div class="success-message" role="status">
+        <p><?= htmlspecialchars($groupSuccess, ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+<?php endif; ?>
+<div class="groups-columns">
         <div class="left-column">
             <section class="my-groups">
                 <h1>My groups</h1>
@@ -201,6 +222,7 @@ $availableGroups = $statement->fetchAll();
                 <?php endif; ?>
 
         </section>
-    </main>
+  </div>
+ </main>
 </body>
 </html>
