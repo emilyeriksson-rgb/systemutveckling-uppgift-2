@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <p>
             Don’t have an account?
-            <a class="secondary-btn" href="/register/">Create one</a>
+            <a class="secondary-btn light-btn" href="/register/">Create one</a>
         </p>
     </main>
 

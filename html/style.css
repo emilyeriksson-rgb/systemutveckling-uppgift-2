@@ -109,6 +109,11 @@ h2, h3, h4, h5, h6 {
     border-radius: 2rem;
 }
 
+.start {
+    padding-bottom: var(--space-large);
+
+}
+
 .tagline{
     padding-left: 2rem;
 /*     color: var(--color-white);
@@ -116,7 +121,7 @@ h2, h3, h4, h5, h6 {
     font-size: 1.2rem;
     line-height: 1.6;
     margin:0 var(--space-small);
-    max-width: 40rem;
+    max-width: 30rem;
 }
 
 .hero-logo {
@@ -130,11 +135,14 @@ h2, h3, h4, h5, h6 {
 .two-buttons {
     display: flex;
     flex-direction: column;
+    gap: 2rem;
     margin-top: var(--space-large);
 
-    gap: 2rem;
-
     align-items: center;
+}
+.two-buttons > .secondary-btn,
+.login-page .light-btn {
+    color: var(--color-blue-light);
 }
 
 .primary-btn {
@@ -978,9 +986,15 @@ align-items:center;
 
 }
 
+.application-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-small);
+    max-width: 22rem;
+}
 
-
-
+.approve-button {}
 
 
 

@@ -11,6 +11,18 @@ if (!$isLoggedIn) {
     exit;
 }
 
+$approvalError = $_SESSION['approval_error'] ?? '';
+$approvalSuccess = $_SESSION['approval_success'] ?? '';
+
+unset(
+    $_SESSION['approval_error'],
+    $_SESSION['approval_success']
+);
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $userId = (int) $_SESSION['user_id'];
 
 $groupId = filter_input(
@@ -108,6 +120,33 @@ $statement->execute([
 
 $groupUsers = $statement->fetchAll();
 
+$pendingApplications = [];
+
+if ($group['current_user_role'] === 'admin') {
+    $statement = $pdo->prepare(
+        'SELECT
+            group_applications.application_id,
+            group_applications.created_at,
+            users.user_id AS applicant_id,
+            users.user_name,
+            users.first_name,
+            users.last_name
+        FROM group_applications
+        INNER JOIN users
+            ON users.user_id = group_applications.user_id
+        WHERE group_applications.group_id = :group_id
+          AND group_applications.application_status = :status
+        ORDER BY group_applications.created_at ASC'
+    );
+
+    $statement->execute([
+        'group_id' => $groupId,
+        'status' => 'pending'
+    ]);
+
+    $pendingApplications = $statement->fetchAll();
+}
+
 $administrators = [];
 $members = [];
 
@@ -118,6 +157,7 @@ foreach ($groupUsers as $groupUser) {
         $members[] = $groupUser;
     }
 }
+
 $page_name = $group['group_name'] . ' | Face IT';
 ?>
 
@@ -187,6 +227,42 @@ $page_name = $group['group_name'] . ' | Face IT';
             </section>
 
             <aside class="group-members">
+                <?php if ($group['current_user_role'] === 'admin'): ?>
+                <?php if ($approvalError !== ''): ?>
+        <div class="form-errors" role="alert">
+            <p><?= htmlspecialchars($approvalError, ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($approvalSuccess !== ''): ?>
+        <div class="success-message" role="status">
+            <p><?= htmlspecialchars($approvalSuccess, ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
+    <?php endif; ?>
+        <h2>Applications</h2>
+        <?php if (empty($pendingApplications)): ?>
+            <p>There are no applications waiting for approval.</p>
+                <?php else: ?>
+                    <div class="applications-list">
+                        <?php foreach ($pendingApplications as $application): ?>
+                            <div class="application-item">
+                                <div class="applicant">
+                                    <span class="user-name" data-user-id="<?= (int) $application['applicant_id'] ?>" tabindex="0"><?= htmlspecialchars($application['user_name']. ',', ENT_QUOTES, 'UTF-8') ?></span>
+                                    <span class="applicant-name"><?= htmlspecialchars($application['first_name'] . ' ' . $application['last_name'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </div>
+
+                                <form action="/groups/applications/" method="post">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
+                                    <input type="hidden" name="application_id" value="<?= (int) $application['application_id'] ?>">
+                                    <button class="approve-button" type="submit">Approve</button>
+                                </form>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+</section>
+                <?php endif; ?>
                 <h2>Members</h2>
 
                 <?php if (empty($members)): ?>

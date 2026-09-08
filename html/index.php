@@ -105,7 +105,7 @@ if ($isLoggedIn) {
     <?php require __DIR__ . '/includes/navigation.php'; ?>
     <main>
         <?php if (!$isLoggedIn): ?>
-            <div class="black-back">
+            <div class="black-back start">
 
     <img src="/face_it.webp" class="hero-logo" alt="Face IT">
     <p class="tagline"> — Talk tech. Share ideas. Solve together. Whether you’re writing your first line of code or shaping the future of IT, there’s always a place for you in the conversation.</p>

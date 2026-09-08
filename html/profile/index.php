@@ -6,9 +6,14 @@ $page_name = 'Profile | Face IT';
 $isLoggedIn = isset($_SESSION['user_id']);
 
 if (!$isLoggedIn) {
-    header('Location: /');
+    header('Location: /login/');
     exit;
 }
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +65,7 @@ if (!$isLoggedIn) {
         <section>
             <h2>Settings</h2>
                     <form action="/logout/" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                         <button type="submit" class="secondary-btn">Log out</button>
                     </form>
         </section>
