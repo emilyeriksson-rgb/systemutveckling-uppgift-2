@@ -234,12 +234,12 @@ $page_name = $group['group_name'] . ' | Face IT';
         </div>
     <?php endif; ?>
 
+    <h2>Applications</h2>
     <?php if ($approvalSuccess !== ''): ?>
         <div class="success-message" role="status">
             <p><?= htmlspecialchars($approvalSuccess, ENT_QUOTES, 'UTF-8') ?></p>
         </div>
     <?php endif; ?>
-        <h2>Applications</h2>
         <?php if (empty($pendingApplications)): ?>
             <p>There are no applications waiting for approval.</p>
                 <?php else: ?>
