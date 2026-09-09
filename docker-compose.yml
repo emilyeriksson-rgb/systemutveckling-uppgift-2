@@ -4,11 +4,15 @@ services:
     restart: no
     volumes:
       - dbstore:/var/lib/mysql
+      - ./faceit-backup.sql:/docker-entrypoint-initdb.d/01-faceit.sql:ro
+
     environment:
       MYSQL_ROOT_PASSWORD: notSecureChangeMe
+      MYSQL_DATABASE: faceit
   site:
     depends_on:
       - db
+    build: .
     image: php-fsu25d:local
     restart: no
     volumes:

@@ -39,13 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'The form could not be verified. Please try again.';
     }
 
-    if ($firstName === '') {
-        $errors[] = 'First name is required.';
-    }
+if ($firstName === '') {
+    $errors[] = 'First name is required.';
+} elseif (strlen($firstName) > 100) {
+    $errors[] = 'First name may contain at most 100 characters.';
+}
 
-    if ($lastName === '') {
-        $errors[] = 'Last name is required.';
-    }
+if ($lastName === '') {
+    $errors[] = 'Last name is required.';
+} elseif (strlen($lastName) > 100) {
+    $errors[] = 'Last name may contain at most 100 characters.';
+}
 
     if ($userName === '') {
     $errors[] = 'User name is required.';

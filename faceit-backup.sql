@@ -1,0 +1,250 @@
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.6.28-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: faceit
+-- ------------------------------------------------------
+-- Server version	10.6.28-MariaDB-ubu2204
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `discussions`
+--
+
+DROP TABLE IF EXISTS `discussions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `discussions` (
+  `discussion_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `image_url` varchar(2048) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`discussion_id`),
+  KEY `fk_discussions_creator` (`created_by`),
+  KEY `idx_discussions_group` (`group_id`),
+  CONSTRAINT `fk_discussions_creator` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_discussions_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discussions`
+--
+
+LOCK TABLES `discussions` WRITE;
+/*!40000 ALTER TABLE `discussions` DISABLE KEYS */;
+INSERT INTO `discussions` VALUES (35,1,6,'What would you like to learn about Web Development?',NULL,'2026-09-09 11:15:35'),(36,2,6,'What would you like to learn about PHP and MySQL?',NULL,'2026-09-09 11:15:35'),(37,3,6,'What would you like to learn about JavaScript?',NULL,'2026-09-09 11:15:35'),(38,4,6,'What would you like to learn about Frontend Development?',NULL,'2026-09-09 11:15:35'),(39,5,6,'What would you like to learn about Backend Development?',NULL,'2026-09-09 11:15:35'),(40,6,6,'What would you like to learn about Databases and SQL?',NULL,'2026-09-09 11:15:35'),(41,7,6,'What would you like to learn about Cybersecurity?',NULL,'2026-09-09 11:15:35'),(42,8,6,'What would you like to learn about Artificial Intelligence?',NULL,'2026-09-09 11:15:35'),(43,9,6,'What would you like to learn about UI and UX Design?',NULL,'2026-09-09 11:15:35'),(44,10,6,'What would you like to learn about Cloud and DevOps?',NULL,'2026-09-09 11:15:35'),(45,11,6,'What would you like to learn about Git and GitHub?',NULL,'2026-09-09 11:15:35'),(46,12,6,'What would you like to learn about Linux?',NULL,'2026-09-09 11:15:35'),(47,13,6,'What would you like to learn about Computer Networks?',NULL,'2026-09-09 11:15:35'),(48,14,6,'What would you like to learn about Software Testing?',NULL,'2026-09-09 11:15:35'),(49,15,6,'What would you like to learn about IT Careers?',NULL,'2026-09-09 11:15:35');
+/*!40000 ALTER TABLE `discussions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group_applications`
+--
+
+DROP TABLE IF EXISTS `group_applications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_applications` (
+  `application_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `application_status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `handled_at` timestamp NULL DEFAULT NULL,
+  `handled_by` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`application_id`),
+  UNIQUE KEY `unique_group_application` (`group_id`,`user_id`),
+  KEY `fk_applications_user` (`user_id`),
+  KEY `fk_applications_handler` (`handled_by`),
+  KEY `idx_applications_group_status` (`group_id`,`application_status`),
+  CONSTRAINT `fk_applications_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_applications_handler` FOREIGN KEY (`handled_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_applications_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group_applications`
+--
+
+LOCK TABLES `group_applications` WRITE;
+/*!40000 ALTER TABLE `group_applications` DISABLE KEYS */;
+INSERT INTO `group_applications` VALUES (3,8,2,'pending','2026-09-07 20:35:10',NULL,NULL),(4,9,2,'pending','2026-09-07 20:47:19',NULL,NULL),(11,8,3,'pending','2026-09-08 19:17:51',NULL,NULL),(12,11,3,'pending','2026-09-08 19:17:54',NULL,NULL),(13,15,3,'pending','2026-09-08 19:17:55',NULL,NULL),(14,3,3,'pending','2026-09-08 19:17:55',NULL,NULL),(15,12,3,'pending','2026-09-08 19:17:56',NULL,NULL),(16,2,3,'pending','2026-09-08 19:17:57',NULL,NULL),(17,5,3,'pending','2026-09-08 19:17:58',NULL,NULL),(18,6,3,'pending','2026-09-08 19:17:58',NULL,NULL),(19,14,3,'pending','2026-09-08 19:17:59',NULL,NULL),(20,9,3,'pending','2026-09-08 19:18:00',NULL,NULL);
+/*!40000 ALTER TABLE `group_applications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group_invites`
+--
+
+DROP TABLE IF EXISTS `group_invites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_invites` (
+  `invite_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `token_hash` char(64) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `used_at` datetime DEFAULT NULL,
+  `used_by` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`invite_id`),
+  UNIQUE KEY `token_hash` (`token_hash`),
+  KEY `fk_invites_creator` (`created_by`),
+  KEY `fk_invites_user` (`used_by`),
+  KEY `idx_invites_group_expiration` (`group_id`,`expires_at`),
+  CONSTRAINT `fk_invites_creator` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_invites_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_invites_user` FOREIGN KEY (`used_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group_invites`
+--
+
+LOCK TABLES `group_invites` WRITE;
+/*!40000 ALTER TABLE `group_invites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `group_invites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group_members`
+--
+
+DROP TABLE IF EXISTS `group_members`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_members` (
+  `group_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `group_role` enum('member','admin') NOT NULL DEFAULT 'member',
+  `joined_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`group_id`,`user_id`),
+  KEY `fk_members_user` (`user_id`),
+  CONSTRAINT `fk_members_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_members_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group_members`
+--
+
+LOCK TABLES `group_members` WRITE;
+/*!40000 ALTER TABLE `group_members` DISABLE KEYS */;
+INSERT INTO `group_members` VALUES (1,2,'admin','2026-09-04 11:24:56'),(1,3,'admin','2026-09-07 13:24:38'),(1,6,'member','2026-09-09 11:15:35'),(1,7,'member','2026-09-09 11:15:35'),(1,8,'member','2026-09-09 11:15:35'),(1,9,'member','2026-09-09 11:15:35'),(1,10,'member','2026-09-09 11:15:35'),(1,11,'member','2026-09-09 11:15:35'),(1,12,'member','2026-09-09 11:15:35'),(1,13,'member','2026-09-09 11:15:35'),(1,14,'member','2026-09-09 11:15:35'),(1,15,'member','2026-09-09 11:15:35'),(1,16,'member','2026-09-09 11:15:35'),(2,2,'admin','2026-09-04 11:24:56'),(2,4,'admin','2026-09-07 13:24:38'),(2,6,'member','2026-09-09 11:15:35'),(2,7,'member','2026-09-09 11:15:35'),(2,8,'member','2026-09-09 11:15:35'),(2,9,'member','2026-09-09 11:15:35'),(2,10,'member','2026-09-09 11:15:35'),(2,11,'member','2026-09-09 11:15:35'),(2,12,'member','2026-09-09 11:15:35'),(2,13,'member','2026-09-09 11:15:35'),(2,14,'member','2026-09-09 11:15:35'),(2,15,'member','2026-09-09 11:15:35'),(2,16,'member','2026-09-09 11:15:35'),(3,5,'admin','2026-09-07 13:24:38'),(3,6,'member','2026-09-09 11:15:35'),(3,7,'member','2026-09-09 11:15:35'),(3,8,'member','2026-09-09 11:15:35'),(3,9,'member','2026-09-09 11:15:35'),(3,10,'member','2026-09-09 11:15:35'),(3,11,'member','2026-09-09 11:15:35'),(3,12,'member','2026-09-09 11:15:35'),(3,13,'member','2026-09-09 11:15:35'),(3,14,'member','2026-09-09 11:15:35'),(3,15,'member','2026-09-09 11:15:35'),(3,16,'member','2026-09-09 11:15:35'),(4,2,'member','2026-09-04 11:24:56'),(4,3,'admin','2026-09-07 13:24:38'),(4,6,'member','2026-09-09 11:15:35'),(4,7,'member','2026-09-09 11:15:35'),(4,8,'member','2026-09-09 11:15:35'),(4,9,'member','2026-09-09 11:15:35'),(4,10,'member','2026-09-09 11:15:35'),(4,11,'member','2026-09-09 11:15:35'),(4,12,'member','2026-09-09 11:15:35'),(4,13,'member','2026-09-09 11:15:35'),(4,14,'member','2026-09-09 11:15:35'),(4,15,'member','2026-09-09 11:15:35'),(4,16,'member','2026-09-09 11:15:35'),(5,2,'member','2026-09-04 11:24:56'),(5,4,'admin','2026-09-07 13:24:38'),(5,6,'member','2026-09-09 11:15:35'),(5,7,'member','2026-09-09 11:15:35'),(5,8,'member','2026-09-09 11:15:35'),(5,9,'member','2026-09-09 11:15:35'),(5,10,'member','2026-09-09 11:15:35'),(5,11,'member','2026-09-09 11:15:35'),(5,12,'member','2026-09-09 11:15:35'),(5,13,'member','2026-09-09 11:15:35'),(5,14,'member','2026-09-09 11:15:35'),(5,15,'member','2026-09-09 11:15:35'),(5,16,'member','2026-09-09 11:15:35'),(6,5,'admin','2026-09-07 13:24:38'),(6,6,'member','2026-09-09 11:15:35'),(6,7,'member','2026-09-09 11:15:35'),(6,8,'member','2026-09-09 11:15:35'),(6,9,'member','2026-09-09 11:15:35'),(6,10,'member','2026-09-09 11:15:35'),(6,11,'member','2026-09-09 11:15:35'),(6,12,'member','2026-09-09 11:15:35'),(6,13,'member','2026-09-09 11:15:35'),(6,14,'member','2026-09-09 11:15:35'),(6,15,'member','2026-09-09 11:15:35'),(6,16,'member','2026-09-09 11:15:35'),(7,3,'admin','2026-09-07 13:24:38'),(7,6,'member','2026-09-09 11:15:35'),(7,7,'member','2026-09-09 11:15:35'),(7,8,'member','2026-09-09 11:15:35'),(7,9,'member','2026-09-09 11:15:35'),(7,10,'member','2026-09-09 11:15:35'),(7,11,'member','2026-09-09 11:15:35'),(7,12,'member','2026-09-09 11:15:35'),(7,13,'member','2026-09-09 11:15:35'),(7,14,'member','2026-09-09 11:15:35'),(7,15,'member','2026-09-09 11:15:35'),(7,16,'member','2026-09-09 11:15:35'),(8,4,'admin','2026-09-07 13:24:38'),(8,6,'member','2026-09-09 11:15:35'),(8,7,'member','2026-09-09 11:15:35'),(8,8,'member','2026-09-09 11:15:35'),(8,9,'member','2026-09-09 11:15:35'),(8,10,'member','2026-09-09 11:15:35'),(8,11,'member','2026-09-09 11:15:35'),(8,12,'member','2026-09-09 11:15:35'),(8,13,'member','2026-09-09 11:15:35'),(8,14,'member','2026-09-09 11:15:35'),(8,15,'member','2026-09-09 11:15:35'),(8,16,'member','2026-09-09 11:15:35'),(9,5,'admin','2026-09-07 13:24:38'),(9,6,'member','2026-09-09 11:15:35'),(9,7,'member','2026-09-09 11:15:35'),(9,8,'member','2026-09-09 11:15:35'),(9,9,'member','2026-09-09 11:15:35'),(9,10,'member','2026-09-09 11:15:35'),(9,11,'member','2026-09-09 11:15:35'),(9,12,'member','2026-09-09 11:15:35'),(9,13,'member','2026-09-09 11:15:35'),(9,14,'member','2026-09-09 11:15:35'),(9,15,'member','2026-09-09 11:15:35'),(9,16,'member','2026-09-09 11:15:35'),(10,3,'admin','2026-09-07 13:24:38'),(10,6,'member','2026-09-09 11:15:35'),(10,7,'member','2026-09-09 11:15:35'),(10,8,'member','2026-09-09 11:15:35'),(10,9,'member','2026-09-09 11:15:35'),(10,10,'member','2026-09-09 11:15:35'),(10,11,'member','2026-09-09 11:15:35'),(10,12,'member','2026-09-09 11:15:35'),(10,13,'member','2026-09-09 11:15:35'),(10,14,'member','2026-09-09 11:15:35'),(10,15,'member','2026-09-09 11:15:35'),(10,16,'member','2026-09-09 11:15:35'),(11,4,'admin','2026-09-07 13:24:38'),(11,6,'member','2026-09-09 11:15:35'),(11,7,'member','2026-09-09 11:15:35'),(11,8,'member','2026-09-09 11:15:35'),(11,9,'member','2026-09-09 11:15:35'),(11,10,'member','2026-09-09 11:15:35'),(11,11,'member','2026-09-09 11:15:35'),(11,12,'member','2026-09-09 11:15:35'),(11,13,'member','2026-09-09 11:15:35'),(11,14,'member','2026-09-09 11:15:35'),(11,15,'member','2026-09-09 11:15:35'),(11,16,'member','2026-09-09 11:15:35'),(12,5,'admin','2026-09-07 13:24:38'),(12,6,'member','2026-09-09 11:15:35'),(12,7,'member','2026-09-09 11:15:35'),(12,8,'member','2026-09-09 11:15:35'),(12,9,'member','2026-09-09 11:15:35'),(12,10,'member','2026-09-09 11:15:35'),(12,11,'member','2026-09-09 11:15:35'),(12,12,'member','2026-09-09 11:15:35'),(12,13,'member','2026-09-09 11:15:35'),(12,14,'member','2026-09-09 11:15:35'),(12,15,'member','2026-09-09 11:15:35'),(12,16,'member','2026-09-09 11:15:35'),(13,3,'admin','2026-09-07 13:24:38'),(13,6,'member','2026-09-09 11:15:35'),(13,7,'member','2026-09-09 11:15:35'),(13,8,'member','2026-09-09 11:15:35'),(13,9,'member','2026-09-09 11:15:35'),(13,10,'member','2026-09-09 11:15:35'),(13,11,'member','2026-09-09 11:15:35'),(13,12,'member','2026-09-09 11:15:35'),(13,13,'member','2026-09-09 11:15:35'),(13,14,'member','2026-09-09 11:15:35'),(13,15,'member','2026-09-09 11:15:35'),(13,16,'member','2026-09-09 11:15:35'),(14,4,'admin','2026-09-07 13:24:38'),(14,6,'member','2026-09-09 11:15:35'),(14,7,'member','2026-09-09 11:15:35'),(14,8,'member','2026-09-09 11:15:35'),(14,9,'member','2026-09-09 11:15:35'),(14,10,'member','2026-09-09 11:15:35'),(14,11,'member','2026-09-09 11:15:35'),(14,12,'member','2026-09-09 11:15:35'),(14,13,'member','2026-09-09 11:15:35'),(14,14,'member','2026-09-09 11:15:35'),(14,15,'member','2026-09-09 11:15:35'),(14,16,'member','2026-09-09 11:15:35'),(15,5,'admin','2026-09-07 13:24:38'),(15,6,'member','2026-09-09 11:15:35'),(15,7,'member','2026-09-09 11:15:35'),(15,8,'member','2026-09-09 11:15:35'),(15,9,'member','2026-09-09 11:15:35'),(15,10,'member','2026-09-09 11:15:35'),(15,11,'member','2026-09-09 11:15:35'),(15,12,'member','2026-09-09 11:15:35'),(15,13,'member','2026-09-09 11:15:35'),(15,14,'member','2026-09-09 11:15:35'),(15,15,'member','2026-09-09 11:15:35'),(15,16,'member','2026-09-09 11:15:35');
+/*!40000 ALTER TABLE `group_members` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `groups`
+--
+
+DROP TABLE IF EXISTS `groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `groups` (
+  `group_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(150) NOT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`group_id`),
+  KEY `fk_groups_creator` (`created_by`),
+  CONSTRAINT `fk_groups_creator` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `groups`
+--
+
+LOCK TABLES `groups` WRITE;
+/*!40000 ALTER TABLE `groups` DISABLE KEYS */;
+INSERT INTO `groups` VALUES (1,'Web Development',2,'2026-09-04 11:24:56'),(2,'PHP and MySQL',2,'2026-09-04 11:24:56'),(3,'JavaScript',2,'2026-09-04 11:24:56'),(4,'Frontend Development',2,'2026-09-04 11:24:56'),(5,'Backend Development',2,'2026-09-04 11:24:56'),(6,'Databases and SQL',2,'2026-09-04 11:24:56'),(7,'Cybersecurity',2,'2026-09-04 11:24:56'),(8,'Artificial Intelligence',2,'2026-09-04 11:24:56'),(9,'UI and UX Design',2,'2026-09-04 11:24:56'),(10,'Cloud and DevOps',2,'2026-09-04 11:24:56'),(11,'Git and GitHub',2,'2026-09-04 11:24:56'),(12,'Linux',2,'2026-09-04 11:24:56'),(13,'Computer Networks',2,'2026-09-04 11:24:56'),(14,'Software Testing',2,'2026-09-04 11:24:56'),(15,'IT Careers',2,'2026-09-04 11:24:56');
+/*!40000 ALTER TABLE `groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `post_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `discussion_id` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`post_id`),
+  KEY `fk_posts_creator` (`created_by`),
+  KEY `idx_posts_discussion` (`discussion_id`),
+  CONSTRAINT `fk_posts_creator` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_posts_discussion` FOREIGN KEY (`discussion_id`) REFERENCES `discussions` (`discussion_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `posts`
+--
+
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+INSERT INTO `posts` VALUES (38,35,6,'Hi! I started this discussion to collect tips, experiences and questions about Web Development. What do you think we should begin with?','2026-09-09 11:15:35'),(39,36,6,'Hi! I started this discussion to collect tips, experiences and questions about PHP and MySQL. What do you think we should begin with?','2026-09-09 11:15:35'),(40,37,6,'Hi! I started this discussion to collect tips, experiences and questions about JavaScript. What do you think we should begin with?','2026-09-09 11:15:35'),(41,38,6,'Hi! I started this discussion to collect tips, experiences and questions about Frontend Development. What do you think we should begin with?','2026-09-09 11:15:35'),(42,39,6,'Hi! I started this discussion to collect tips, experiences and questions about Backend Development. What do you think we should begin with?','2026-09-09 11:15:35'),(43,40,6,'Hi! I started this discussion to collect tips, experiences and questions about Databases and SQL. What do you think we should begin with?','2026-09-09 11:15:35'),(44,41,6,'Hi! I started this discussion to collect tips, experiences and questions about Cybersecurity. What do you think we should begin with?','2026-09-09 11:15:35'),(45,42,6,'Hi! I started this discussion to collect tips, experiences and questions about Artificial Intelligence. What do you think we should begin with?','2026-09-09 11:15:35'),(46,43,6,'Hi! I started this discussion to collect tips, experiences and questions about UI and UX Design. What do you think we should begin with?','2026-09-09 11:15:35'),(47,44,6,'Hi! I started this discussion to collect tips, experiences and questions about Cloud and DevOps. What do you think we should begin with?','2026-09-09 11:15:35'),(48,45,6,'Hi! I started this discussion to collect tips, experiences and questions about Git and GitHub. What do you think we should begin with?','2026-09-09 11:15:35'),(49,46,6,'Hi! I started this discussion to collect tips, experiences and questions about Linux. What do you think we should begin with?','2026-09-09 11:15:35'),(50,47,6,'Hi! I started this discussion to collect tips, experiences and questions about Computer Networks. What do you think we should begin with?','2026-09-09 11:15:35'),(51,48,6,'Hi! I started this discussion to collect tips, experiences and questions about Software Testing. What do you think we should begin with?','2026-09-09 11:15:35'),(52,49,6,'Hi! I started this discussion to collect tips, experiences and questions about IT Careers. What do you think we should begin with?','2026-09-09 11:15:35'),(53,35,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(54,36,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(55,37,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(56,38,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(57,39,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(58,40,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(59,41,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(60,42,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(61,43,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(62,44,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(63,45,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(64,46,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(65,47,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(66,48,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(67,49,7,'I would love to join! It would be helpful to begin with the basics and then build an example together.','2026-09-09 11:15:35'),(68,35,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(69,36,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(70,37,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(71,38,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(72,39,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(73,40,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(74,41,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(75,42,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(76,43,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(77,44,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(78,45,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(79,46,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(80,47,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(81,48,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(82,49,8,'Great idea! We can also share useful resources and talk about problems we have solved.','2026-09-09 11:15:35'),(83,35,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(84,36,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(85,37,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(86,38,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(87,39,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(88,40,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(89,41,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(90,42,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(91,43,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(92,44,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(93,45,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(94,46,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(95,47,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(96,48,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35'),(97,49,9,'I would like to see a practical example that we can discuss and improve together.','2026-09-09 11:15:35');
+/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (2,'exempel','exempelson','Emily','emily@faceit.test','$2y$12$c4O3a0H/qS2Z6/3L9p5UBuZ2cTEobP2VsgO7RD8jc1ILZvzzScgqC','2026-09-01 07:54:31'),(3,'Alex','Andersson','CodeAlex','alex@faceit.test','$2y$12$GzaIPBejdjFFRn4RPmNseekmwMu3hhyZzqc4XR2h7SE.8ZD5FR3S2','2026-09-07 13:24:38'),(4,'Samira','Svensson','Sam','samira@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-07 13:24:38'),(5,'Leo','Lindberg','Leo Lindberg','leo@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-07 13:24:38'),(6,'Emily','Johansson','Emily','emily.johansson@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(7,'Nora','Berg','NoraB','nora@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(8,'William','Lind','WilliamL','william@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(9,'Maja','Holm','MajaH','maja@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(10,'Oliver','Nystrom','OliverN','oliver@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(11,'Elsa','Dahl','ElsaD','elsa@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(12,'Hugo','Ek','HugoE','hugo@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(13,'Alice','Strand','AliceS','alice@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(14,'Lucas','Fors','LucasF','lucas@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(15,'Sofia','Vik','SofiaV','sofia@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35'),(16,'Elias','Sjoberg','EliasS','elias@faceit.test','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi','2026-09-09 11:15:35');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-09-09 12:10:44
