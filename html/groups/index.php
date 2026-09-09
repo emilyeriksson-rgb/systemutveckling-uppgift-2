@@ -151,13 +151,14 @@ $availableGroups = $statement->fetchAll();
                                         <?php endif; ?>
                                         
                                         <?php if ($group['member_role'] === 'member'): ?>
-                                            <form action="/groups/leave/" method="post">
+                                            <form action="/groups/actions/" method="post">
                                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                                                 <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
-                                                
+                                                <input type="hidden" name="action" value="leave_group">
+
                                                 <button class="group-button" type="submit" aria-label="Leave <?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?>" title="Leave group"><img src="/assets/icons/remove.svg" alt="Leave group"></button>
                                             </form>
-                                            <?php endif; ?>
+                                        <?php endif; ?>
 
                             </div>
                         <?php endforeach; ?>
@@ -184,12 +185,13 @@ $availableGroups = $statement->fetchAll();
 
                                     <span><?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?></span>
 
-                                    <form action="/groups/applications/cancel/" method="post">
-                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">   
-                                        <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
+                                 <form action="/groups/actions/" method="post">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
+                                    <input type="hidden" name="action" value="cancel_application">
 
-                                        <button class="group-button" type="submit" aria-label="Cancel application to <?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?>" title="Cancel application"><img src="/assets/icons/undo.svg" alt="Cancel application"></button>
-                                    </form>
+                                    <button class="group-button" type="submit" aria-label="Cancel application to <?= htmlspecialchars($group['group_name'], ENT_QUOTES, 'UTF-8') ?>" title="Cancel application"><img src="/assets/icons/undo.svg" alt="Cancel application"></button>
+                                </form>
 
                                 </div>
                             <?php endforeach; ?>

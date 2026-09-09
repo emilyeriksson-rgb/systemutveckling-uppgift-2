@@ -99,6 +99,7 @@ h1 {
 h2, h3, h4, h5, h6 {
     font-family: "Poetsen One", sans-serif;
     font-weight: 100;
+    margin-top: var(--space-large);
 }
 
 .black-back {
@@ -899,7 +900,6 @@ border-radius: 0.5rem;
 
 
 .pending-groups {
-    margin-top: var(--space-medium);
     opacity: 0.8;
 }
 
