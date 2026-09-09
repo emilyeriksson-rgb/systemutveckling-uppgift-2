@@ -120,6 +120,7 @@ $availableGroups = $statement->fetchAll();
 
 
 <main class="groups-page">
+    <a class="backLink" href="/" onclick="history.back(); return false;">Back</a>
     <?php if ($groupError !== ''): ?>
     <div class="form-errors" role="alert">
         <p><?= htmlspecialchars($groupError, ENT_QUOTES, 'UTF-8') ?></p>
@@ -164,7 +165,7 @@ $availableGroups = $statement->fetchAll();
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
-                    <form class="create-group-form form-field" action="/groups/create/" method="post">
+                    <form id="create-group" class="create-group-form form-field" action="/groups/create/" method="post">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
 
                         <label for="group-name">Create a new group</label>

@@ -271,6 +271,29 @@ if ($isLoggedIn) {
         <p>Contact</p>
 
 </footer>
-    
+    <aside class="cookie-notice" id="cookie-notice" aria-labelledby="cookie-title">
+    <img class="cookie-icon" src="/assets/icons/cookie.svg" alt="">
+
+    <div>
+        <h2 id="cookie-title">Cookies on Face IT</h2>
+        <p>Face IT uses a session cookie to keep you securely signed in. We do not use advertising or tracking cookies.</p>
+    </div>
+
+    <button class="cookie-button" id="close-cookie-notice" type="button">Got it</button>
+</aside>
+
+<script>
+    const cookieNotice = document.querySelector('#cookie-notice');
+    const closeCookieNotice = document.querySelector('#close-cookie-notice');
+
+    if (localStorage.getItem('cookieNoticeClosed') === 'true') {
+        cookieNotice.hidden = true;
+    }
+
+    closeCookieNotice.addEventListener('click', function () {
+        cookieNotice.hidden = true;
+        localStorage.setItem('cookieNoticeClosed', 'true');
+    });
+</script>
 </body>
 </html>

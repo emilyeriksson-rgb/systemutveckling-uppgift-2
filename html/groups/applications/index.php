@@ -52,10 +52,6 @@ $pdo = connectDatabase();
 try {
     $pdo->beginTransaction();
 
-    /*
-     * Hämta ansökan och kontrollera samtidigt att den
-     * inloggade användaren är admin i rätt grupp.
-     */
     $statement = $pdo->prepare(
         'SELECT group_applications.user_id
          FROM group_applications
@@ -93,9 +89,6 @@ try {
         exit;
     }
 
-    /*
-     * Lägg den sökande användaren i gruppen som medlem.
-     */
     $statement = $pdo->prepare(
         'INSERT IGNORE INTO group_members (
             group_id,
@@ -114,9 +107,6 @@ try {
         'group_role' => 'member'
     ]);
 
-    /*
-     * Markera ansökan som godkänd.
-     */
     $statement = $pdo->prepare(
         'UPDATE group_applications
          SET application_status = :approved_status,

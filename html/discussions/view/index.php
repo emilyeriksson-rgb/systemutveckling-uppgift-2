@@ -131,9 +131,7 @@ $page_name = $discussion['title'] . ' | Face IT';
     ?>
 
     <main class="discussion-page">
-        <a class="backLink" href="/">
-            Back
-        </a>
+     <a class="backLink" href="/" onclick="history.back(); return false;">Back</a>
 
         <header class="discussion-header">
       
