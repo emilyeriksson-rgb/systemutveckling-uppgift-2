@@ -162,18 +162,6 @@ if ($lastName === '') {
 
         <h1>Create an account</h1>
 
-        <?php if (!empty($errors)): ?>
-            <div class="form-errors" role="alert">
-                <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <li>
-                            <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
-
         <form action="/register/" method="post">
             <input
                 type="hidden"
@@ -274,6 +262,18 @@ if ($lastName === '') {
                 autocomplete="new-password"
                 required
             >
+
+              <?php if (!empty($errors)): ?>
+            <div class="form-errors" role="alert">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li>
+                            <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
             <button class="primary-btn" type="submit">Create account</button>
         </form>

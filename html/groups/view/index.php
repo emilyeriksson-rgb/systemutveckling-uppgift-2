@@ -255,7 +255,7 @@ $page_name = $group['group_name'] . ' | Face IT';
                                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
                                     <input type="hidden" name="group_id" value="<?= (int) $group['group_id'] ?>">
                                     <input type="hidden" name="application_id" value="<?= (int) $application['application_id'] ?>">
-                                    <button class="approve-button" type="submit">Approve</button>
+                                    <button class="secondary-btn" type="submit">Approve</button>
                                 </form>
                             </div>
                         <?php endforeach; ?>
